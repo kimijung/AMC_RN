@@ -323,13 +323,10 @@
 <script>
     const quizData = [
         {
-            type: "IMAGE_SINGLE",
-            q: "틀린 부분을 찾으세요. (1개)",
-            img: "ANS.png",
-            targets: [
-                { id: "hand", x: 0.636, y: 0.903, radius: 0.09 }
-            ],
-            explanation: "중심정맥관 삽입 시 maximal barrier precaution을 위해 drape으로 환자 신체를 충분히 덮어야 합니다."
+            type: "OX",
+            q: "손소독제를 많이 펌프할수록 소독 효과가 뛰어나다.",
+            a: "X",
+            explanation: "소독제는 적당량을 바르고 완전히 건조되어야 미생물 사멸 효과를 나타냅니다."
         },
         {
             type: "OX",
@@ -379,15 +376,18 @@
         },
         {
             type: "OX",
-            q: "수술 후 수술부위 드레싱 시, 기존 드레싱을 제거하고 새로운 드레싱 적용하기 전 손위생 및 장갑 교환이 필요하다.",
-            a: "O",
-            explanation: "기존 드레싱 제거 후에는 손위생과 장갑 교환이 필요합니다."
+            q: "중심정맥관 투약 전, 허브는 4회만 소독하면 충분하다.",
+            a: "X",
+            explanation: "중심정맥관 투약 전에는 허브를 6회 이상 쥐어짜듯 소독해야 합니다."
         },
         {
-            type: "OX",
-            q: "수술 부위 제모가 필요한 경우, 면도기를 사용하는 것이 가장 효과적이다.",
-            a: "X",
-            explanation: "면도기는 미세 상처를 유발할 수 있어 필요 시 클리퍼 등을 사용합니다."
+            type: "IMAGE_SINGLE",
+            q: "외과적 손소독 시, alcohol rub에 가장 먼저 담가야 할 것은?",
+            img: "Handrub.png",
+            targets: [
+                { id: "fingertips", x: 0.46, y: 0.74, radius: 0.08 }
+            ],
+            explanation: 한쪽 손에 alcohol rub을 받은 후, 반대편 손끝을 담가 손톱 밑과 손가락 끝을 충분히 소독합니다."
         }
     ];
 
