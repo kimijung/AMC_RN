@@ -331,7 +331,8 @@
             <div class="score-board">
                 <span id="playerInfo"></span> |
                 점수: <span id="scoreVal">0</span> |
-                진행: <span id="progressVal">1</span>/<span id="totalVal">0</span>
+                진행: <span id="progressVal">1</span>/<span id="totalVal">0</span> |
+                시간: <span id="timeVal">0</span>s
             </div>
 
             <div id="questionCard" class="question-card">
@@ -389,9 +390,9 @@
             q: "틀린 부분을 모두 찾으세요. (3개)",
             img: "OP.png",
            targets: [
-                { id: "waist", x: 0.29, y: 0.69, radius: 0.07 },  // 여자 허리끈 시작 부위
-                { id: "hair",  x: 0.66, y: 0.42, radius: 0.07 },  // 가운데 남자 귀 주변 머리카락
-                { id: "nose",  x: 0.83, y: 0.44, radius: 0.06 }   // 오른쪽 남자 코
+                { id: "waist", x: 0.24, y: 0.72, radius: 0.04 },  // 여자 허리끈 시작 부위
+                { id: "hair",  x: 0.64, y: 0.47, radius: 0.04 },  // 가운데 남자 귀 주변 머리카락
+                { id: "nose",  x: 0.82, y: 0.46, radius: 0.04 }   // 오른쪽 남자 코
             ],
             explanation: "모자 밖 머리카락 노출, 마스크 밖 코 노출, 가운 허리끈 풀림은 모두 감염관리 측면에서 부적절합니다."
         },
@@ -430,6 +431,8 @@
         }
     ];
 
+    let startTime = 0;
+    let timerInterval = null;
     let score = 0;
     let currentQIndex = 0;
     let isAnswerLocked = false;
@@ -441,19 +444,20 @@
     let timer = null;
 
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxe5NjMLeJ0Fa_VIxEidrmFmsg7J1BH5awJhP72_SSiwdGMvmGNvAgRvzBZacjzNpVG/exec';
-
-    function saveResultToSheet(affiliation, name, score) {
+    const SHEET_NAME = "간호직"; 
+    
+    function saveResultToSheet(affiliation, name, score, time) {
         const formData = new FormData();
         formData.append('affiliation', affiliation);
         formData.append('name', name);
         formData.append('score', score);
-
+        formData.append('time', time);
+        formData.append('sheetName', SHEET_NAME); // 🔥 핵심
+    
         fetch(SCRIPT_URL, {
             method: 'POST',
             body: formData,
             mode: 'no-cors'
-        }).catch(error => {
-            console.error('저장 실패:', error);
         });
     }
 
@@ -468,8 +472,14 @@
 
         currentAffiliation = affiliation;
         currentName = name;
+        startTime = Date.now();
 
-         document.getElementById('characterImg').src = 'icon.png'; //
+        timerInterval = setInterval(() => {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById('timeVal').innerText = elapsed;
+        }, 1000);
+
+        document.getElementById('characterImg').src = 'icon.png'; //
 
         document.getElementById('playerInfo').innerText = `${affiliation} ${name}`.trim();
         document.getElementById('entryScreen').style.display = 'none';
@@ -713,9 +723,11 @@
             comment = "기본 감염관리 수칙을 다시 한 번 복습해 보세요.";
         }
 
-        document.getElementById('finalComment').innerText = comment;
+        clearInterval(timerInterval);
 
-        saveResultToSheet(currentAffiliation, currentName, score);
+        const totalTime = Math.floor((Date.now() - startTime) / 1000);
+        document.getElementById('finalComment').innerText = comment;
+        saveResultToSheet(currentAffiliation, currentName, score, totalTime);
     }
 
     document.getElementById('nameInput').addEventListener('keydown', function(e) {
@@ -725,6 +737,7 @@
     document.getElementById('affiliationInput').addEventListener('keydown', function(e) {
         if (e.key === 'Enter') startGame();
     });
+    
 
     function drawCircle(target, img) {
         const board = document.getElementById('imageBoard');
