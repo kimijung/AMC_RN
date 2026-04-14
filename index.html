@@ -90,12 +90,6 @@
             width: 100%;
         }
 
-        .controls {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* 🔥 2열 */
-            gap: 12px;
-        }
-
         #characterImg {
             width: min(42vw, 220px);
             max-width: 220px;
@@ -115,8 +109,9 @@
         .controls {
             width: min(90%, 520px);
             display: flex;
-            justify-content: center;
-            gap: 20px;
+            flex-direction: column;  /* 🔥 핵심 */
+            align-items: center;
+            gap: 12px;
             margin-bottom: 28px;
         }
 
@@ -210,10 +205,8 @@
             .image-board {
                 position: relative;
                 width: 100%;
-                max-width: 760px;
-            
+                max-width: 600px;
                 margin: 0 auto;
-            
                 border-radius: 16px;
                 overflow: hidden;
                 box-shadow: 0 8px 20px rgba(0,0,0,0.15);
@@ -223,9 +216,6 @@
             .image-board img {
                     width: 100%;        /* 🔥 핵심 */
                     height: auto;
-                
-                    max-height: 80vh;
-                
                     display: block;
                     object-fit: contain;
                 }
@@ -287,11 +277,22 @@
         }    
 
         .mcq-options {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        width: 100%;
-    }
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .submit-btn {
+            margin-top: 10px;
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 10px;
+            background: #ddd;   /* 연회색 */
+            color: #2c3e50;
+            border: none;
+            cursor: pointer;
+        }
             
     </style>
 </head>
@@ -310,7 +311,7 @@
             <input type="text" id="nameInput" placeholder="이름 입력">
         </div>
 
-        <button class="main-btn" onclick="startGame()">Start Game</button>
+        <button class="main-btn" onclick="startGame()">시작하기</button>
     </div>
 
     <div id="gameScreen">
@@ -376,10 +377,10 @@
             q: "틀린 부분을 모두 찾으세요. (3개)",
             img: "OP.png",
            targets: [
-            { id: "waist", x: 0.36, y: 0.73, radius: 0.08 },  // 여자 가운끈 시작 부분
-            { id: "hair",  x: 0.56, y: 0.33, radius: 0.07 },  // 가운데 남자 귀 옆 머리카락
-            { id: "nose",  x: 0.77, y: 0.40, radius: 0.07 }   // 오른쪽 남자 코
-                ],
+                { id: "waist", x: 0.34, y: 0.72, radius: 0.10 },
+                { id: "hair",  x: 0.55, y: 0.34, radius: 0.09 },
+                { id: "nose",  x: 0.76, y: 0.41, radius: 0.09 }
+            ],
             explanation: "모자 밖 머리카락 노출, 마스크 밖 코 노출, 가운 허리끈 풀림은 모두 감염관리 측면에서 부적절합니다."
         },
         {
@@ -411,7 +412,7 @@
             q: "외과적 손소독 시, alcohol rub에 가장 먼저 담가야 할 것은?",
             img: "Handrub.png",
             targets: [
-                { id: "fingertips", x: 0.50, y: 0.12, radius: 0.12 }
+                { id: "fingertips", x: 0.50, y: 0.12, radius: 0.16 }
             ],
             explanation: "한쪽 손에 alcohol rub을 받은 후, 반대편 손끝을 담가 손톱 밑과 손가락 끝을 충분히 소독합니다."
         }
@@ -488,8 +489,9 @@
         document.getElementById('feedback').style.color = "#2c3e50";
 
         isAnswerLocked = false;
-         foundTargets = new Set();
+        foundTargets = new Set();
         controls.innerHTML = "";
+        selectedMulti.clear();  
 
         if (current.type === "OX") {
             charWrap.style.display = "flex";
@@ -503,13 +505,17 @@
         else if (current.type === "MCQ") {
             charWrap.style.display = "flex";
             card.innerHTML = `<div>${current.q}</div>`;
-            controls.innerHTML = current.options.map((opt, idx) => `
-                <button class="btn-mcq" onclick="chooseMCQ(${idx})">
-                    ${opt}
-                </button>
-            `).join("");
+            controls.innerHTML = `
+                <div class="mcq-options">
+                    ${current.options.map((opt, idx) => `
+                        <button class="btn-mcq" onclick="chooseMCQ(${idx})">
+                            ${opt}
+                        </button>
+                    `).join("")}
+                </div>
+            `;
         }
-
+            
        else if (current.type === "MULTI") {
             charWrap.style.display = "flex";
             card.innerHTML = `<div>${current.q}</div>`;
@@ -523,13 +529,15 @@
                     `).join("")}
                 </div>
 
-                <button class="main-btn" onclick="submitMulti()">제출</button>
+                <button class="submit-btn" onclick="submitMulti()">제출</button>
             `;   
         }
 
         else if (current.type === "IMAGE_SINGLE" || current.type === "IMAGE_MULTI") {
             charWrap.style.display = "none";
             card.classList.add('image-mode');
+
+            controls.innerHTML = ""; //
         
             let timeLimit = current.type === "IMAGE_SINGLE" ? 20 : 30;
         
@@ -729,8 +737,8 @@
             dot.style.background = "rgba(255,0,0,0.8)";
             dot.style.borderRadius = "50%";
             dot.style.transform = "translate(-50%, -50%)";
-            dot.style.left = (target.x / img.naturalWidth) * 100 + "%";
-            dot.style.top = (target.y / img.naturalHeight) * 100 + "%";
+            dot.style.left = (target.x * 100) + "%";
+            dot.style.top = (target.y * 100) + "%";
             dot.style.pointerEvents = "none";
              board.appendChild(dot);
         });
