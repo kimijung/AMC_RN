@@ -386,7 +386,7 @@
             q: "외과적 손소독 시, alcohol rub에 가장 먼저 담가야 할 것은?",
             img: "Handrub.png",
             targets: [
-                { id: "fingertips", x: 0.46, y: 0.74, radius: 0.08 }
+                { id: "fingertips", x: 0.50, y: 0.13, radius: 0.10 }
             ],
             explanation: "한쪽 손에 alcohol rub을 받은 후, 반대편 손끝을 담가 손톱 밑과 손가락 끝을 충분히 소독합니다."
         }
@@ -400,6 +400,7 @@
 
     let foundTargets = new Set();
     let selectedMulti = new Set();
+    let timer = null;
 
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxe5NjMLeJ0Fa_VIxEidrmFmsg7J1BH5awJhP72_SSiwdGMvmGNvAgRvzBZacjzNpVG/exec';
 
@@ -497,19 +498,29 @@
         else if (current.type === "IMAGE_SINGLE" || current.type === "IMAGE_MULTI") {
             charWrap.style.display = "none";
             card.classList.add('image-mode');
-            
+        
+            let timeLimit = current.type === "IMAGE_SINGLE" ? 20 : 30;
+        
             card.innerHTML = `
                 <div class="image-question-wrap">
                     <div>${current.q}</div>
+                    <div class="image-guide">${timeLimit}초 시간 제한</div>
                     <div id="imageBoard" class="image-board">
                         <img id="quizImage" src="${current.img}">
                     </div>
                 </div>
             `;
-
+        
             const img = document.getElementById("quizImage");
             img.onclick = handleImageClick;
-            };        
+        
+            // ⏱ 타이머 시작
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                if (!isAnswerLocked) {
+                    handleResult(false); // 틀린 것으로 처리
+                }
+            }, timeLimit * 1000);
         }
 
     function chooseAnswer(choice) {
@@ -601,6 +612,8 @@
     function handleResult(isCorrect) {
         if (isAnswerLocked) return;
         isAnswerLocked = true;
+
+        clearTimeout(timer);
 
         const feedback = document.getElementById('feedback');
         const img = document.getElementById('characterImg');
