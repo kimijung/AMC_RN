@@ -390,9 +390,9 @@
             q: "틀린 부분을 모두 찾으세요. (3개)",
             img: "OP.png",
            targets: [
-                { id: "waist", x: 0.31, y: 0.69, radius: 0.035 },
-                { id: "hair",  x: 0.67, y: 0.40, radius: 0.035 },
-                { id: "nose",  x: 0.82, y: 0.43, radius: 0.03 }
+                { id: "waist", x: 0.29, y: 0.71, radius: 0.025 },
+                { id: "hair",  x: 0.63, y: 0.41, radius: 0.025 },
+                { id: "nose",  x: 0.80, y: 0.42, radius: 0.022 }
             ],
             explanation: "모자 밖 머리카락 노출, 마스크 밖 코 노출, 가운 허리끈 풀림은 모두 감염관리 측면에서 부적절합니다."
         },
@@ -443,7 +443,7 @@
     let selectedMulti = new Set();
     let timer = null;
 
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyUn6qcbVWwCKAoYQvSqABKpkpMLV0ln_DBgiqSiO8JO6SYZZKhEWqK9PFjQ5YkQv9Z/exec;
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyUn6qcbVWwCKAoYQvSqABKpkpMLV0ln_DBgiqSiO8JO6SYZZKhEWqK9PFjQ5YkQv9Z/exec';
     const SHEET_NAME = "간호직"; 
     
     function saveResultToSheet(affiliation, name, score, time) {
