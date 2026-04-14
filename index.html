@@ -219,7 +219,7 @@
             
             .image-board img {
                 max-width: 100%;
-                max-height: 60vh;
+                max-height: 80vh;
             
                 width: auto;
                 height: auto;
@@ -367,10 +367,10 @@
             q: "틀린 부분을 모두 찾으세요. (3개)",
             img: "OP.png",
             targets: [
-                { id: "waist", x: 0.234, y: 0.708, radius: 0.07 },
-                { id: "hair", x: 0.654, y: 0.386, radius: 0.06 },
-                { id: "nose", x: 0.790, y: 0.430, radius: 0.06 }
-            ],
+                    { id: "waist", x: 0.43, y: 0.72, radius: 0.08 },   // 가운끈
+                    { id: "hair", x: 0.58, y: 0.32, radius: 0.07 },    // 가운데 남자 머리
+                    { id: "nose", x: 0.78, y: 0.42, radius: 0.07 }     // 오른쪽 남자 코
+                ],
             explanation: "모자 밖 머리카락 노출, 마스크 밖 코 노출, 가운 허리끈 풀림은 모두 감염관리 측면에서 부적절합니다."
         },
         {
@@ -402,7 +402,7 @@
             q: "외과적 손소독 시, alcohol rub에 가장 먼저 담가야 할 것은?",
             img: "Handrub.png",
             targets: [
-                { id: "fingertips", x: 0.50, y: 0.13, radius: 0.10 }
+                { id: "fingertips", x: 0.50, y: 0.12, radius: 0.12 }
             ],
             explanation: "한쪽 손에 alcohol rub을 받은 후, 반대편 손끝을 담가 손톱 밑과 손가락 끝을 충분히 소독합니다."
         }
@@ -453,7 +453,10 @@
         document.getElementById('entryScreen').style.display = 'none';
         document.getElementById('resultScreen').style.display = 'none';
         document.getElementById('gameScreen').style.display = 'block';
-
+        document.getElementById('feedback').innerText = "";
+        document.getElementById('feedback').style.marginTop = "20px";
+        document.getElementById('feedback').style.position = "static";
+        
         score = 0;
         currentQIndex = 0;
         isAnswerLocked = false;
