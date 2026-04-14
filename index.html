@@ -332,18 +332,19 @@
             type: "OX",
             q: "외과적 손소독 시 1분 이상 팔꿈치 위 5cm까지 모든 부위를 소독해야 한다.",
             a: "X",
-            explanation: "외과적 손소독은 2분 이상 시행합니다."
+            explanation: "외과적 손소독 시 2분 이상 스크럽이 필요합니다."
         },
         {
-            type: "MCQ",
-            q: "Skin prep 시 가장 중요한 것은?",
+            type: "MULTI",
+            q: "수술부위감염 예방 번들에 포함되는 항목을 모두 선택해주세요.",
             options: [
-                "소독제 다량 도포",
-                "소독제를 빠르게 도포",
-                "소독제 완전 건조"
+                "적절한 외과적 손소독",
+                "수술 중 충분한 산소 공급",
+                "예상 절개부위를 넘어가지 않도록 국소부위만 피부 소독",
+                "정상 체온 유지"
             ],
-            a: 2,
-            explanation: "소독제는 완전히 건조되어야 충분한 효과를 기대할 수 있습니다."
+            a: [0, 1, 3],
+            explanation: "수술부위감염 예방 번들에는 상기 항목이 포함되어야 하며, 예상 절개부위 이상 광범위하게 피부 소독해야 합니다."
         },
         {
             type: "IMAGE_MULTI",
@@ -398,6 +399,7 @@
     let currentName = '';
 
     let foundTargets = new Set();
+    let selectedMulti = new Set();
 
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxe5NjMLeJ0Fa_VIxEidrmFmsg7J1BH5awJhP72_SSiwdGMvmGNvAgRvzBZacjzNpVG/exec';
 
@@ -479,6 +481,19 @@
             `).join("");
         }
 
+       else if (current.type === "MULTI") {
+            charWrap.style.display = "flex";
+            card.innerHTML = `<div>${current.q}</div>`;
+        
+            controls.innerHTML = current.options.map((opt, idx) => `
+                <button class="btn-mcq" onclick="toggleMulti(${idx})" id="multi-${idx}">
+                    ${idx + 1}. ${opt}
+                </button>
+            `).join("") + `
+                <button class="main-btn" onclick="submitMulti()">제출</button>
+            `;
+        }     
+
         else if (current.type === "IMAGE_SINGLE" || current.type === "IMAGE_MULTI") {
             charWrap.style.display = "none";
             card.classList.add('image-mode');
@@ -494,7 +509,7 @@
 
             const img = document.getElementById("quizImage");
             img.onclick = handleImageClick;
-            };
+            };        
         }
 
     function chooseAnswer(choice) {
@@ -507,6 +522,31 @@
         handleResult(idx === current.a);
     }
 
+    function toggleMulti(idx) {
+        const btn = document.getElementById(`multi-${idx}`);
+
+        if (selectedMulti.has(idx)) {
+            selectedMulti.delete(idx);
+            btn.style.background = "#3498db";
+        } else {
+            selectedMulti.add(idx);
+            btn.style.background = "#2ecc71";
+        }
+    }
+
+    function submitMulti() {
+        const current = quizData[currentQIndex];
+    
+        const correct = current.a;
+        const selected = Array.from(selectedMulti);
+    
+        const isCorrect =
+            selected.length === correct.length &&
+            selected.every(v => correct.includes(v));
+    
+        selectedMulti.clear();
+        handleResult(isCorrect);
+    }
 
     function handleImageClick(e) {
         if (isAnswerLocked) return;
