@@ -462,6 +462,7 @@
     }
 
     function startGame() {
+        clearInterval(timerInterval);
         const affiliation = document.getElementById('affiliationInput').value.trim();
         const name = document.getElementById('nameInput').value.trim();
 
@@ -481,7 +482,10 @@
 
         timerInterval = setInterval(() => {
             const elapsed = Math.floor((Date.now() - startTime) / 1000);
-            document.getElementById('timeVal').innerText = elapsed;
+            const timeEl = document.getElementById('timeVal');
+            if (timeEl) {
+                timeEl.innerText = elapsed;
+            }
         }, 1000);
 
         document.getElementById('characterImg').src = 'icon.png'; //
@@ -509,7 +513,7 @@
         const card = document.getElementById('questionCard');
         const controls = document.querySelector('.controls');
 
-        controls.className = "controls";
+        controls.classList.remove("ox-layout");
         card.classList.remove('image-mode');
 
         document.getElementById('progressVal').innerText = currentQIndex + 1;
