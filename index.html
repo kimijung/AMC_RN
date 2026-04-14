@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
     <title>AMC 수술실 감염관리 챌린지 🏥</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Malgun Gothic', sans-serif;
+            font-family: 'Pretendard', sans-serif;
             width: 100vw;
             height: 100vh;
             overflow: hidden;
@@ -379,10 +380,10 @@
             type: "IMAGE_MULTI",
             q: "틀린 부분을 모두 찾으세요. (3개)",
             img: "OP.png",
-            targets: [
-                    { id: "waist", x: 0.43, y: 0.72, radius: 0.08 },   // 가운끈
-                    { id: "hair", x: 0.58, y: 0.32, radius: 0.07 },    // 가운데 남자 머리
-                    { id: "nose", x: 0.78, y: 0.42, radius: 0.07 }     // 오른쪽 남자 코
+           targets: [
+            { id: "waist", x: 0.36, y: 0.73, radius: 0.08 },  // 여자 가운끈 시작 부분
+            { id: "hair",  x: 0.56, y: 0.33, radius: 0.07 },  // 가운데 남자 귀 옆 머리카락
+            { id: "nose",  x: 0.77, y: 0.40, radius: 0.07 }   // 오른쪽 남자 코
                 ],
             explanation: "모자 밖 머리카락 노출, 마스크 밖 코 노출, 가운 허리끈 풀림은 모두 감염관리 측면에서 부적절합니다."
         },
