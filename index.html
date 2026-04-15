@@ -49,14 +49,14 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start; /* center에서 flex-start로 변경 (상단부터 배치) */
-            padding: calc(60px + env(safe-area-inset-top)) 16px 20px; /* 점수판 공간(60px) 확보 */
+            padding: calc(120px + env(safe-area-inset-top)) 16px 20px; /* 점수판 공간(60px) 확보 */
             box-sizing: border-box;
             overflow-y: auto; /* 내용이 많을 경우 내부 스크롤 허용 */
         }
                     
         .score-board {
             position: absolute;
-            top: 15px;             /* 모든 문제에서 동일한 상단 위치 */
+            top: calc(45px + env(safe-area-inset-top));
             z-index: 100;
             font-size: 15px;
             font-weight: bold;
@@ -87,7 +87,7 @@
             font-weight: 700;
             color: #2c3e50;
             line-height: 1.45;
-            margin-top: 20px;
+            margin-top: 40px;
             overflow: hidden;
             word-break: keep-all;
         }
@@ -248,8 +248,8 @@
                 align-items: center;
                 justify-content: flex-start;
                 margin: 0 auto;
-                gap: 20px;
-                padding-tip: 20px;
+                gap: 25px;
+                padding-tip: 10px;
             }
             
             .image-board {
@@ -257,11 +257,11 @@
                 width: 100%;
                 max-width: 600px;
                 aspect-ratio: 3 / 4;   
-                border-radius: 12px;
+                border-radius: 16px;
                 overflow: hidden;
-                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
                 background: white;
-                margin-bottom: 15px;
+                padding-bottom: 40px;
             }
             
             .image-board img {
@@ -287,11 +287,11 @@
             
             /* 🔽 틀린그림 3개 (작게) */
             .hit-circle.small {
-                width: 24px;
-                height: 24px;
-                max-width: 24px;
-                max-height: 24px;
-                border: 3px solid #e74c3c;
+                width: 20px;
+                height: 20px;
+                max-width: 20px;
+                max-height: 20px;
+                border: 2px solid #e74c3c;
             }
             
             /* 🔽 틀린그림 1개 (크게) */
