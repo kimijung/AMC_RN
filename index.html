@@ -113,6 +113,8 @@
             align-items: center;
             justify-content: center;
             width: 100%;
+            position: relative;
+            top: 0;
         }
 
         #characterImg {
@@ -124,27 +126,26 @@
         }
 
         #feedback {
-            min-height: 0px;
-            margin-top: 20px;
-            font-size: 18px;
+            position: absolute;              /* 🔥 핵심 */
+            top: 140px;                      /* 위치 (필요하면 조절) */
+            left: 50%;
+            transform: translateX(-50%);
+        
+            z-index: 1000;
+        
+            min-width: 140px;
+            max-width: 90%;
+        
+            font-size: 16px;                 /* 살짝 줄이면 더 깔끔 */
             font-weight: 700;
             text-align: center;
-            
-            display: flex;
-            align-items: center;
-            justify-content: center;
         
             padding: 8px 14px;
             border-radius: 12px;
         
-            width: fit-content;
-            max-width: 90%;
-        
-            margin-left: auto;
-            margin-right: auto;
+            display: none;                   /* 기본 숨김 */
         
             box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-        
             transition: all 0.25s ease;
         }
 
@@ -248,23 +249,24 @@
             word-break: keep-all;
         }
 
-         .image-board {
-            position: relative;
-            width: 100%;
-            max-width: 420px;
-            aspect-ratio: 3 / 4;   
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            background: none;
-            margin-top: 10px;
-         }
+          .image-board {
+              position: relative;
+              width: 100%;
+              max-width: 600px;
+              aspect-ratio: 3 / 4;   
+              overflow: hidden;
+              background: transparent;   /* 🔥 완전 제거 */
+              box-shadow: none;          /* 🔥 그림자 제거 (이게 박스처럼 보이게 함) */
+              border-radius: 0;          /* 🔥 둥근거 제거 (이미지에는 필요 없음) */
+              margin-top: 10px;
+            }
 
         .image-board img {
              width: 100%;
              height: 100%;
              object-fit: contain;  /* 🔥 확대 방지 */
              display: block;
+             background: transparent;
            }
 
         .image-question-wrap {
@@ -349,9 +351,6 @@
                 min-height: 44px;
             }
         
-            #feedback {
-                font-size: 18px;
-            }
         
             .image-guide {
                 font-size: 14px;   /* 18px에서 14px로 축소 */
@@ -378,21 +377,21 @@
                 position: relative;
                 width: 100%;
                 max-width: 600px;
-                aspect-ratio: 3 / 4;   
-                border-radius: 16px;
+                aspect-ratio: auto;   
                 overflow: hidden;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-                background: none;
+                background: transparent;   /* 🔥 완전 제거 */
+                box-shadow: none;          /* 🔥 그림자 제거 (이게 박스처럼 보이게 함) */
+                border-radius: 0;          /* 🔥 둥근거 제거 (이미지에는 필요 없음) */
                 margin-top: 10px;
             }
             
             .image-board img {
-                width: 100%;
-                height: 100%;
-                object-fit: contain;  /* 🔥 확대 방지 */
-                transform: scale(1.03);  /* 🔥 살짝 확대 */
-                display: block;
-            }
+                 width: 100%;
+                 height: 100%;
+                 object-fit: contain;  /* 🔥 확대 방지 */
+                 display: block;
+                 background: transparent;
+               }
                                 
             .hit-circle {
                 position: absolute;
@@ -719,6 +718,8 @@
         const current = quizData[currentQIndex];
         const card = document.getElementById('questionCard');
         const controls = document.querySelector('.controls');
+        const feedback = document.getElementById('feedback');
+        feedback.style.display = "none";
 
         controls.classList.remove("ox-layout");
         card.classList.remove('image-mode');
@@ -941,6 +942,7 @@
         if (isCorrect) {
             score += 10;
             feedback.innerText = "정답입니다 😎";
+            feedback.style.display = "block";
             feedback.style.color = "#fff";
             feedback.style.background = "#27ae60";
             img.src = 'icon_happy.png';
