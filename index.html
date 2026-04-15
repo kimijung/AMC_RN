@@ -127,20 +127,20 @@
 
         #feedback {
             position: absolute; 
-            top: 60%;             /* 화면 세로 중앙 */
+            top: 48%;             /* 화면 세로 중앙 */
             left: 50%;            /* 화면 가로 중앙 */
             transform: translate(-50%, -50%); /* 정확히 정중앙 배치 */
             z-index: 9999;        /* 모든 요소보다 위에 표시 */
             
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 50px;  /* 캡슐 모양 */
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 800;
             text-align: center;
             color: #ffffff !important; /* 무조건 흰색 글자 */
             
             display: none;        /* 평소엔 숨김 */
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 7px 16px rgba(0,0,0,0.2);
             pointer-events: none; /* 클릭 방해 금지 */
             white-space: nowrap;   /* 🔥 삐져나감 방지 핵심 */
             max-width: 80%;        /* 🔥 화면 밖 방지 */
@@ -375,7 +375,7 @@
                 position: relative;
                 width: 100%;
                 max-width: 600px;
-                aspect-ratio: auto;   
+                aspect-ratio: 3 / 4;   
                 overflow: hidden;
                 background: transparent;   /* 🔥 완전 제거 */
                 box-shadow: none;          /* 🔥 그림자 제거 (이게 박스처럼 보이게 함) */
