@@ -554,18 +554,21 @@
 <script>
     const quizData = [
         {
+            id: "Q1",
             type: "OX",
             q: "손소독제를 많이 펌프할수록 소독 효과가 뛰어나다.",
             a: "X",
             explanation: "소독제는 적당량을 바르고 완전히 건조되어야 미생물 사멸 효과를 나타냅니다."
         },
         {
+            id: "Q2",
             type: "OX",
             q: "외과적 손소독 시 <strong>1분</strong> 이상 <strong>팔꿈치 위 5cm</strong>까지 모든 부위를 소독해야 한다.",
             a: "X",
             explanation: "외과적 손소독 시 2분 이상 스크럽이 필요합니다."
         },
         {
+            id: "Q3",
             type: "MULTI",
             q: "수술부위감염 예방 번들에 포함되는 항목을<br><strong>모두</strong> 선택해주세요.",
             options: [
@@ -578,6 +581,7 @@
             explanation: "수술부위감염 예방 번들에는 상기 항목이 포함되어야 하며, 예상 절개부위 이상 광범위하게 피부 소독해야 합니다."
         },
         {
+            id: "Q4",
             type: "IMAGE_MULTI",
             q: "틀린 부분을 <strong>모두</strong> 찾으세요. (3개)",
             img: "OP.png",
@@ -589,6 +593,7 @@
                 explanation: "모자 밖 머리카락 노출, 마스크 밖 코 노출, 가운 허리끈 풀림은 모두 감염관리 측면에서 부적절합니다."
         },
         {
+            id: "Q5",
             type: "MCQ",
             q: "손위생이 필요하지 <strong>않은</strong> 시점은?",
             options: [
@@ -601,18 +606,21 @@
             explanation: "환자 주변 물품 접촉 전은 WHO 손위생 5가지 시점에 포함되지 않습니다."
         },
         {
+            id: "Q6",
             type: "OX",
             q: "여성 환자에게 유치도뇨관을 삽입하기 전<br><strong>요도구</strong>만 깨끗하게 닦으면 된다.",
             a: "X",
             explanation: "삽입 전에는 적절한 순서에 따라 충분히 소독해야 합니다."
         },
         {
+            id: "Q7",
             type: "OX",
             q: "중심정맥관 투약 전,<br>허브는 <strong>4회</strong>만 소독하면 충분하다.",
             a: "X",
             explanation: "중심정맥관 투약 전에는 허브를 6회 이상 쥐어짜듯 소독해야 합니다."
         },
         {
+            id: "Q8",
             type: "IMAGE_SINGLE",
             q: "외과적 손소독 시, alcohol rub에<br>가장 먼저 담가야 할 것은?",
             img: "Handrub.png",
@@ -630,27 +638,39 @@
     let isAnswerLocked = false;
     let currentAffiliation = '';
     let currentName = '';
+    let currentQuizData = [];
+    let answerLog = [];
 
     let foundTargets = new Set();
     let selectedMulti = new Set();
     let timer = null;
 
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyUn6qcbVWwCKAoYQvSqABKpkpMLV0ln_DBgiqSiO8JO6SYZZKhEWqK9PFjQ5YkQv9Z/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxS1Q5nwAFygDv4-ofQgluTD8V4AgBOb84rhNsoy7aut9oHpgkqnSLN_5iQG9YCBd91/exec';
     const SHEET_NAME = "간호직"; 
     
-    function saveResultToSheet(affiliation, name, score, time) {
+    function saveResultToSheet(affiliation, name, score, time, answerLog) {
         const formData = new FormData();
         formData.append('affiliation', affiliation);
         formData.append('name', name);
         formData.append('score', score);
         formData.append('time', time);
         formData.append('sheetName', SHEET_NAME);
+        formData.append('answerLog', JSON.stringify(answerLog));
     
         fetch(SCRIPT_URL, {
             method: 'POST',
             body: formData,
             mode: 'no-cors'
         });
+    }
+
+    function shuffleArray(array) {
+        const shuffled = [...array];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
     }
 
     function startGame() {
@@ -692,15 +712,17 @@
         score = 0;
         currentQIndex = 0;
         isAnswerLocked = false;
+        currentQuizData = shuffleArray(quizData);
+        answerLog = [];
 
         document.getElementById('scoreVal').innerText = score;
-        document.getElementById('totalVal').innerText = quizData.length;
+        document.getElementById('totalVal').innerText = currentQuizData.length;
         showQuestion();
     }
 
     function showQuestion() {
         const charWrap = document.querySelector('.character-wrap');
-        const current = quizData[currentQIndex];
+        const current = currentQuizData[currentQIndex];
         const card = document.getElementById('questionCard');
         const controls = document.querySelector('.controls');
         const feedback = document.getElementById('feedback');
@@ -800,12 +822,12 @@
     }
         
     function chooseAnswer(choice) {
-        const current = quizData[currentQIndex];
+        const current = currentQuizData[currentQIndex];
         handleResult(choice === current.a);
     }
 
     function chooseMCQ(idx) {
-        const current = quizData[currentQIndex];
+        const current = currentQuizData[currentQIndex];
         handleResult(idx === current.a);
     }
 
@@ -825,7 +847,7 @@
     }
 
     function submitMulti() {
-        const current = quizData[currentQIndex];
+        const current = currentQuizData[currentQIndex];
     
         const correct = current.a;
         const selected = Array.from(selectedMulti);
@@ -841,7 +863,7 @@
     function handleImageClick(e) {
         if (isAnswerLocked) return;
 
-        const current = quizData[currentQIndex];
+        const current = currentQuizData[currentQIndex];
         const img = e.target;
         const rect = img.getBoundingClientRect();
         
@@ -922,9 +944,17 @@
         isAnswerLocked = true;
         clearTimeout(timer);
     
+        const current = currentQuizData[currentQIndex];
         const feedback = document.getElementById('feedback');
         const img = document.getElementById('characterImg');
-    
+
+        answerLog.push({
+            id: current.id,
+            type: current.type,
+            order: currentQIndex + 1,
+            correct: isCorrect
+        });
+        
         // 1. 메시지 보이기 (block 설정 필수!)
         feedback.style.display = "block";
     
@@ -947,7 +977,7 @@
             img.src = 'icon.png';
             currentQIndex++;
     
-            if (currentQIndex >= quizData.length) {
+            if (currentQIndex >= currentQuizData.length) {
                 endGame();
             } else {
                 showQuestion();
@@ -979,7 +1009,7 @@
 
         // 4. 결과 저장
         const totalTime = Math.floor((Date.now() - startTime) / 1000);
-        saveResultToSheet(currentAffiliation, currentName, score, totalTime);
+        saveResultToSheet(currentAffiliation, currentName, score, totalTime, answerLog);
     }
 
     document.getElementById('nameInput').addEventListener('keydown', function(e) {
@@ -994,7 +1024,7 @@
     function drawCircle(target, img) {
         const board = document.getElementById('imageBoard');
         const circle = document.createElement("div");
-        const current = quizData[currentQIndex];
+        const current = currentQuizData[currentQIndex];
     
         circle.className = (current.type === "IMAGE_MULTI") ? "hit-circle small" : "hit-circle large";
     
