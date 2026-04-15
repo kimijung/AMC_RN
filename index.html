@@ -44,47 +44,53 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 16px;
+            padding: calc(10px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom));
             box-sizing: border-box;
-            justify-content: center;
-            padding-top: calc(16px + env(safe-area-inset-top));
+            justify-content: flex-start;
+            overflow: hidden;
         }
 
         .score-board {
-            font-size: 17px;
+            font-size: 15px;
             font-weight: bold;
             background: rgba(255,255,255,0.9);
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-radius: 20px;
-            margin-top: 8px;
-            margin-bottom: 16px;
+            margin-top: 0;
+            margin-bottom: 10px;
             text-align: center;
+            max-width: 92vw;
+            white-space: nowrap;
         }
 
         .question-card {
-            width: min(88%, 520px);
-            min-height: 120px;
+            width: min(92vw, 520px);
+            min-height: 90px;
+            max-width: 520px;
             background: rgba(255,255,255,0.96);
             border-radius: 18px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.12);
             display: block;
             text-align: center;
-            padding: 24px 20px;
+            padding: 16px 16px;
             box-sizing: border-box;
-            font-size: 24px;
+            font-size: 18px;
             font-weight: 700;
             color: #2c3e50;
-            line-height: 1.5;
-            margin-top: 12px;
+            line-height: 1.45;
+            margin-top: 6px;
+            overflow: hidden;
+            word-break: keep-all;
         }
 
         .question-card.image-mode {
-            width: 100%;
-            height: 100%;
-            padding: 16px;
+            width: min(92vw, 820px);
+            max-height: calc(100vh - 110px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+            padding: 14px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
+            overflow: hidden;
         }
         
         .character-wrap {
@@ -190,18 +196,38 @@
 
         @media (max-width: 480px) {
             .question-card {
-                font-size: 20px;
-                min-height: 110px;
-                padding: 20px 16px;
+                font-size: 16px;
+                min-height: 80px;
+                padding: 14px 14px;
+                line-height: 1.4;
             }
-
+        
             .btn-answer {
-                height: 80px;
-                font-size: 30px;
+                height: 72px;
+                font-size: 28px;
             }
-
+        
+            .btn-mcq {
+                border: none;
+                border-radius: 14px;
+                padding: 12px 12px;
+                font-size: 16px;
+                font-weight: 700;
+                color: #2c3e50;
+                background: white;
+                cursor: pointer;
+                box-shadow: 0 6px 14px rgba(0,0,0,0.16);
+                line-height: 1.35;
+                word-break: keep-all;
+            }
+        
             #feedback {
-                font-size: 20px;
+                font-size: 18px;
+            }
+        
+            .image-guide {
+                font-size: 15px;
+                padding: 8px 12px;
             }
         }
 
@@ -212,10 +238,10 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                justify-content: center;
+                justify-content: flex-start;
             
                 margin: 0 auto;
-                gap: 12px;
+                gap: 10px;
             }
             
             .image-board {
@@ -231,12 +257,17 @@
                 background: white;
             }
             
-            .image-board img {
-                    width: 100%;       
-                    height: auto;
-                    display: block;
-                    object-fit: contain;
-                }
+            .image-board {
+                position: relative;
+                width: 100%;
+                max-width: 600px;
+                max-height: 52vh;
+                margin: 0 auto;
+                border-radius: 16px;
+                overflow: hidden;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+                background: white;
+            }
 
         .hit-circle {
             position: absolute;
@@ -408,9 +439,9 @@
             q: "틀린 부분을 모두 찾으세요. (3개)",
             img: "OP.png",
            targets: [
-                { id: "waist", x: 0.26, y: 0.69, radius: 0.050 },
-                { id: "hair",  x: 0.63, y: 0.45, radius: 0.050 },
-                { id: "nose",  x: 0.81, y: 0.47, radius: 0.050 }
+                { id: "waist", x: 0.24, y: 0.78, radius: 0.055 }, // 더 아래 + 왼쪽
+                { id: "hair",  x: 0.68, y: 0.48, radius: 0.050 }, // 귀 중심
+                { id: "nose",  x: 0.84, y: 0.50, radius: 0.050 }  // 코 중심
             ],
                 explanation: "모자 밖 머리카락 노출, 마스크 밖 코 노출, 가운 허리끈 풀림은 모두 감염관리 측면에서 부적절합니다."
         },
@@ -681,9 +712,11 @@
         if (!hit) {
             document.getElementById('feedback').innerText = "다시 찾아보세요!";
             document.getElementById('feedback').style.color = "#e74c3c";
-            return;
-        }
-
+            
+                navigator.vibrate?.(50); // 🔥 추가
+                return;
+            }
+        
         foundTargets.add(hit.id);
         drawCircle(hit, img);
 
