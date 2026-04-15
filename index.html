@@ -126,6 +126,10 @@
             font-size: 24px;
             font-weight: bold;
             text-align: center;
+            padding: 8px 16px;
+            border-radius: 12px;
+            display: inline-block;
+            transition: all 0.2s ease;
         }
 
         .controls {
@@ -203,6 +207,14 @@
             border-radius: 30px;
             cursor: pointer;
             width: 100%;
+        }
+
+        .question-text {
+            margin-bottom: 8px;
+        }
+        
+        .image-guide {
+            margin-bottom: 12px;
         }
 
         @media (max-width: 480px) {
@@ -436,7 +448,7 @@
     <div id="resultScreen" style="display:none;">
         <h2 id="resultTitle" style="color:#2c3e50; margin-top: 0; line-height: 1.4; word-break: keep-all;"></h2>
         
-        <p id="finalScore" style="font-size: 26px; font-weight: bold; color: #3498db; margin: 10px 0;"></p>
+        <p id="finalScore" style="font-size: 26px; font-weight: bold; color: #1e8449; margin: 10px 0;"></p>
         <p id="finalComment" style="font-size: 16px; line-height: 1.5; color: #555; margin-bottom: 20px;"></p>
 
         <div style="background: #f0fff4; padding: 18px; border-radius: 15px; border: 2px dashed #2ecc71; margin-bottom: 25px; font-size: 14px; color: #2c3e50; line-height: 1.6;">
@@ -606,6 +618,7 @@
         document.getElementById('progressVal').innerText = currentQIndex + 1;
         document.getElementById('feedback').innerText = "";
         document.getElementById('feedback').style.color = "#2c3e50";
+        document.getElementById('feedback').style.background = "transparent";
 
         isAnswerLocked = false;
         foundTargets = new Set();
@@ -669,10 +682,10 @@
         
             card.innerHTML = `
                 <div class="image-question-wrap">
-                    <div style="line-height: 1.2;">
+                    <div class="question-text">
                         ${current.q}
-                        <span class="image-guide">시간 제한 ${timeLimit}초</span>
                     </div>
+                    <div class="image-guide">시간 제한 ${timeLimit}초</div>
                     <div id="imageBoard" class="image-board">
                         <img id="quizImage" src="${current.img}">
                     </div>
@@ -784,6 +797,7 @@
 
         if (!hit) {
             document.getElementById('feedback').innerText = "다시 찾아보세요!";
+            feedback.style.color = "#fff";
             document.getElementById('feedback').style.color = "#e74c3c";
             
                 navigator.vibrate?.(50); // 🔥 추가
@@ -819,12 +833,14 @@
 
         if (isCorrect) {
             score += 10;
-            feedback.innerText = "정답!";
-            feedback.style.color = "#27ae60";
+            feedback.innerText = "✔ 정답!";
+            feedback.style.color = "#fff";
+            feedback.style.background = "#27ae60";
             img.src = 'icon_happy.png';
         } else {
-            feedback.innerText = "오답!";
-            feedback.style.color = "#c0392b";
+            feedback.innerText = "✖ 오답!";
+            feedback.style.color = "#fff";
+            feedback.style.background = "#e74c3c";
             img.src = 'icon_sad.png';
         }
 
@@ -856,9 +872,9 @@
         // 3. 점수별 코멘트 (추천 멘트로 변경)
         let comment = "";
         if (score >= 80) {
-            comment = "와우! 당신은 우리 수술장의 감염관리 마스터! 🏥✨";
+            comment = "당신은 우리 수술장의 감염관리 마스터! 🏥✨";
         } else if (score >= 50) {
-            comment = "훌륭합니다! 안전한 수술실 환경을 위해 조금만 더 힘내주세요! 👍";
+            comment = "훌륭합니다!<br>안전한 수술실 환경을 위해 조금만 더 힘내주세요! 👍";
         } else {
             comment = "감염관리 수칙을 다시 한번 복습해볼까요? ✍️";
         }
