@@ -103,7 +103,7 @@
             background: rgba(255,255,255,0.98);   /* 🔥 카드 배경 */
             border-radius: 20px;                 /* 🔥 둥근 모서리 */
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            overflow: visible;
+            overflow: hidden;
         }
                 
         .character-wrap {
@@ -126,13 +126,13 @@
         }
 
         #feedback {
-            position: fixed;    /* 화면 위에 띄움 (캐릭터 위치 영향 X) */
-            top: 50%;             /* 화면 세로 중앙 */
+            position: absolute; 
+            top: 60%;             /* 화면 세로 중앙 */
             left: 50%;            /* 화면 가로 중앙 */
             transform: translate(-50%, -50%); /* 정확히 정중앙 배치 */
             z-index: 9999;        /* 모든 요소보다 위에 표시 */
             
-            padding: 20px 40px;
+            padding: 12px 24px;
             border-radius: 50px;  /* 캡슐 모양 */
             font-size: 24px;
             font-weight: 800;
@@ -140,9 +140,11 @@
             color: #ffffff !important; /* 무조건 흰색 글자 */
             
             display: none;        /* 평소엔 숨김 */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
             pointer-events: none; /* 클릭 방해 금지 */
-            min-width: 200px;
+            white-space: nowrap;   /* 🔥 삐져나감 방지 핵심 */
+            max-width: 80%;        /* 🔥 화면 밖 방지 */
+            text-align: center;
         }
 
         .controls {
@@ -698,7 +700,6 @@
         document.getElementById('gameScreen').style.display = 'block';
         document.getElementById('feedback').innerText = "";
         document.getElementById('feedback').style.marginTop = "20px";
-        document.getElementById('feedback').style.position = "static";
         
         score = 0;
         currentQIndex = 0;
