@@ -98,7 +98,7 @@
             padding: 18px 14px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             background: rgba(255,255,255,0.98);   /* 🔥 카드 배경 */
             border-radius: 20px;                 /* 🔥 둥근 모서리 */
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
@@ -126,7 +126,7 @@
 
         #feedback {
             position: absolute; 
-            top: 51%;             /* 화면 세로 중앙 */
+            top: 52%;             /* 화면 세로 중앙 */
             left: 50%;            /* 화면 가로 중앙 */
             transform: translate(-50%, -50%); /* 정확히 정중앙 배치 */
             z-index: 9999;        /* 모든 요소보다 위에 표시 */
@@ -251,6 +251,8 @@
               width: 100%;
               max-width: 600px;
               aspect-ratio: 3 / 4;   
+              padding: 12px 0;
+              box-sizing: border-box;
               overflow: hidden;
               background: transparent;   /* 🔥 완전 제거 */
               box-shadow: none;          /* 🔥 그림자 제거 (이게 박스처럼 보이게 함) */
