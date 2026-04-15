@@ -121,15 +121,28 @@
         }
 
         #feedback {
-            min-height: 40px;
-            margin-top: 10px;
-            font-size: 24px;
-            font-weight: bold;
+            min-height: 60px;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: 700;
             text-align: center;
-            padding: 8px 16px;
-            border-radius: 12px;
-            display: inline-block;
-            transition: all 0.2s ease;
+            
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        
+            padding: 12px 18px;
+            border-radius: 14px;
+        
+            width: fit-content;
+            max-width: 90%;
+        
+            margin-left: auto;
+            margin-right: auto;
+        
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        
+            transition: all 0.25s ease;
         }
 
         .controls {
@@ -210,11 +223,11 @@
         }
 
         .question-text {
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
         
         .image-guide {
-            margin-bottom: 12px;
+            margin-bottom: 5px;
         }
 
         @media (max-width: 480px) {
@@ -796,13 +809,14 @@
         }
 
         if (!hit) {
-            document.getElementById('feedback').innerText = "다시 찾아보세요!";
+            const feedback = document.getElementById('feedback');
+            feedback.innerText = "다시 찾아보세요 🧐";
+            feedback.style.background = "#f39c12";
             feedback.style.color = "#fff";
-            document.getElementById('feedback').style.color = "#e74c3c";
-            
-                navigator.vibrate?.(50); // 🔥 추가
-                return;
-            }
+                        
+            navigator.vibrate?.(50); 
+             return;
+        }
         
         foundTargets.add(hit.id);
         drawCircle(hit, img);
@@ -817,8 +831,10 @@
         if (foundTargets.size === current.targets.length) {
             handleResult(true);
         } else {
-            document.getElementById('feedback').innerText =
-                `정답! ${current.targets.length - foundTargets.size}개 남음`;
+            const feedback = document.getElementById('feedback');
+            feedback.innerText = `잘 찾았어요 👍 ${current.targets.length - foundTargets.size}개 남음`;
+            feedback.style.background = "#27ae60";
+            feedback.style.color = "#fff";
         }
         }
 
@@ -833,12 +849,12 @@
 
         if (isCorrect) {
             score += 10;
-            feedback.innerText = "✔ 정답!";
+            feedback.innerText = "정답입니다 😎";
             feedback.style.color = "#fff";
             feedback.style.background = "#27ae60";
             img.src = 'icon_happy.png';
         } else {
-            feedback.innerText = "✖ 오답!";
+            feedback.innerText = "오답입니다 🥺";
             feedback.style.color = "#fff";
             feedback.style.background = "#e74c3c";
             img.src = 'icon_sad.png';
