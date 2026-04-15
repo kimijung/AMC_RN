@@ -87,7 +87,7 @@
             font-weight: 700;
             color: #2c3e50;
             line-height: 1.45;
-            margin-top: 20px;
+            margin-top: 14px;   /* 점수~문제 거리 */
             overflow: hidden;
             word-break: keep-all;
         }
@@ -105,7 +105,7 @@
                 
         .character-wrap {
             flex: none;
-            margin: 30px 0;
+            margin: 30px 0 80px 0;   /* 캐릭터~선택지 거리 */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -238,12 +238,15 @@
             }
         
             .image-guide {
-                font-size: 15px;
-                padding: 8px 12px;
+                font-size: 14px;   /* 18px에서 14px로 축소 */
+                font-weight: 600;
+                color: #555;       /* 약간 부드러운 색상으로 변경 */
+                background: rgba(255,255,255,0.8);
+                padding: 4px 10px; /* 상하 여백 축소 */
+                border-radius: 10px;
             }
-        }
 
-            .image-question-wrap {
+            .image-question-wrap {    
                 width: 100%;
                 max-width: 900px;
                 display: flex;
@@ -251,7 +254,7 @@
                 align-items: center;
                 justify-content: flex-start;
                 margin: 0 auto;
-                gap: 25px;
+                gap: 8px;                /*퀴즈 문제~캐릭터 간격 조정*/
                 padding-tip: 10px;
             }
             
@@ -277,25 +280,27 @@
                                 
             .hit-circle {
                 position: absolute;
-                width: 6vw;
-                height: 6vw;
-                max-width: 46px;
-                max-height: 46px;
-                border: 4px solid #e74c3c;
-                border-radius: 50%;
                 transform: translate(-50%, -50%);
+                border-radius: 50%;
                 pointer-events: none;
-                box-shadow: 0 0 0 3px rgba(255,255,255,0.7);
-                animation: popIn 0.18s ease-out;
+                border: 5px solid #ff0000; 
+                box-shadow: 
+                    inset 0 0 4px rgba(0,0,0,0.3), /* 안쪽 그림자로 오목한 느낌 */
+                    0 0 8px rgba(255, 0, 0, 0.5),   /* 바깥쪽 은은한 붉은 광채 */
+                    0 2px 4px rgba(0,0,0,0.2);     /* 바닥면 그림자 */
+                
+                background: transparent;
+                animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 살짝 튕기는 듯한 등장 */
+                z-index: 50;
             }
             
-            /* 🔽 틀린그림 3개 (작게) */
+            /* 🔽 틀린그림 3개 (작게) - Apple 링 느낌 유지 */
             .hit-circle.small {
-                width: 20px;
+                width: 20px;   /* 기존 20px에서 약간 키워 가독성 확보 */
                 height: 20px;
                 max-width: 20px;
                 max-height: 20px;
-                border: 2px solid #e74c3c;
+                border-width: 2px; /* 작은 원은 선을 살짝 가늘게 */
             }
             
             /* 🔽 틀린그림 1개 (크게) */
@@ -304,18 +309,20 @@
                 height: 70px;
                 max-width: 70px;
                 max-height: 70px;
+                border-width: 7px; /* 큰 원은 선을 더 두껍고 입체감 있게 */
             }
-        
-        @keyframes popIn {
-            from {
-                transform: translate(-50%, -50%) scale(0.4);
-                opacity: 0;
+            
+            /* 등장 애니메이션 (더 생동감 있게 수정) */
+            @keyframes popIn {
+                from {
+                    transform: translate(-50%, -50%) scale(0.3);
+                    opacity: 0;
+                }
+                to {
+                    transform: translate(-50%, -50%) scale(1);
+                    opacity: 1;
+                }
             }
-            to {
-                transform: translate(-50%, -50%) scale(1);
-                opacity: 1;
-            }
-        }
 
         .mcq-grid {
             width: min(90%, 520px);
