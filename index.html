@@ -47,6 +47,7 @@
             padding: 16px;
             box-sizing: border-box;
             justify-content: center;
+            padding-top: calc(16px + env(safe-area-inset-top));
         }
 
         .score-board {
@@ -55,7 +56,7 @@
             background: rgba(255,255,255,0.9);
             padding: 8px 16px;
             border-radius: 20px;
-            margin-top: 4px;
+            margin-top: 8px;
             margin-bottom: 16px;
             text-align: center;
         }
@@ -78,10 +79,12 @@
         }
 
         .question-card.image-mode {
-            width: min(95vw, 820px);
-            max-height: calc(100vh - 120px);
-            padding: 20px;
-            overflow-y: auto;
+            width: 100%;
+            height: 100%;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
         .character-wrap {
@@ -218,7 +221,9 @@
             .image-board {
                 position: relative;
                 width: 100%;
+                height: 100%;
                 max-width: 600px;
+                max-height: 60vh;
                 margin: 0 auto;
                 border-radius: 16px;
                 overflow: hidden;
@@ -227,9 +232,10 @@
             }
             
             .image-board img {
-                    width: 100%;        /* 🔥 핵심 */
+                    width: 100%;       
                     height: auto;
                     display: block;
+                    object-fit: contain;
                 }
 
         .hit-circle {
@@ -390,9 +396,9 @@
             q: "틀린 부분을 모두 찾으세요. (3개)",
             img: "OP.png",
            targets: [
-                { id: "waist", x: 0.29, y: 0.71, radius: 0.025 },
-                { id: "hair",  x: 0.63, y: 0.41, radius: 0.025 },
-                { id: "nose",  x: 0.80, y: 0.42, radius: 0.022 }
+                { id: "waist", x: 0.285, y: 0.695, radius: 0.025 },
+                { id: "hair",  x: 0.635, y: 0.405, radius: 0.018 },
+                { id: "nose",  x: 0.805, y: 0.415, radius: 0.016 }
             ],
             explanation: "모자 밖 머리카락 노출, 마스크 밖 코 노출, 가운 허리끈 풀림은 모두 감염관리 측면에서 부적절합니다."
         },
