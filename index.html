@@ -48,17 +48,16 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             justify-content: flex-start; /* center에서 flex-start로 변경 (상단부터 배치) */
-                padding: calc(40px + env(safe-area-inset-top)) 16px 20px; /* 점수판 공간(60px) 확보 */
-                box-sizing: border-box;
-                overflow-y: auto; /* 내용이 많을 경우 내부 스크롤 허용 */
-            }
+            padding: calc(60px + env(safe-area-inset-top)) 16px 20px; /* 점수판 공간(60px) 확보 */
+            box-sizing: border-box;
+            overflow-y: auto; /* 내용이 많을 경우 내부 스크롤 허용 */
+        }
                     
         .score-board {
             position: absolute;
             top: 15px;             /* 모든 문제에서 동일한 상단 위치 */
-            z-index: 10;
+            z-index: 100;
             font-size: 15px;
             font-weight: bold;
             background: rgba(255,255,255,0.9);
@@ -88,7 +87,7 @@
             font-weight: 700;
             color: #2c3e50;
             line-height: 1.45;
-            margin-top: 6px;
+            margin-top: 20px;
             overflow: hidden;
             word-break: keep-all;
         }
@@ -249,8 +248,8 @@
                 align-items: center;
                 justify-content: flex-start;
                 margin: 0 auto;
-                gap: 15px;
-                padding-tip: 10px;
+                gap: 20px;
+                padding-tip: 20px;
             }
             
             .image-board {
@@ -288,10 +287,11 @@
             
             /* 🔽 틀린그림 3개 (작게) */
             .hit-circle.small {
-                width: 30px;
-                height: 30px;
-                max-width: 30px;
-                max-height: 30px;
+                width: 24px;
+                height: 24px;
+                max-width: 24px;
+                max-height: 24px;
+                border: 3px solid #e74c3c;
             }
             
             /* 🔽 틀린그림 1개 (크게) */
@@ -450,9 +450,9 @@
             q: "틀린 부분을 모두 찾으세요. (3개)",
             img: "OP.png",
             targets: [
-                { id: "waist", x: 0.24, y: 0.68, radius: 0.08 }, // y를 0.71에서 0.68로 (허리춤)
-                { id: "hair",  x: 0.66, y: 0.40, radius: 0.07 }, // y를 0.36에서 0.40으로 (귀 높이)
-                { id: "nose",  x: 0.74, y: 0.41, radius: 0.07 }  // x를 0.71에서 0.74로 (코 중심)
+                { id: "waist", x: 0.24, y: 0.62, radius: 0.08 }, // y를 0.71에서 0.68로 (허리춤)
+                { id: "hair",  x: 0.66, y: 0.40, radius: 0.05 }, // y를 0.36에서 0.40으로 (귀 높이)
+                { id: "nose",  x: 0.75, y: 0.42, radius: 0.05 }  // x를 0.71에서 0.74로 (코 중심)
             ],
                 explanation: "모자 밖 머리카락 노출, 마스크 밖 코 노출, 가운 허리끈 풀림은 모두 감염관리 측면에서 부적절합니다."
         },
