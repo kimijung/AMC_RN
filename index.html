@@ -87,22 +87,25 @@
             font-weight: 700;
             color: #2c3e50;
             line-height: 1.45;
-            margin-top: 40px;
+            margin-top: 25px;
             overflow: hidden;
             word-break: keep-all;
         }
 
         .question-card.image-mode {
             width: min(92vw, 520px);
-            padding: 12px;
+            height: auto;
+            min-height: auto;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
+            overflow: visible;
         }
                 
         .character-wrap {
             flex: none;
-            margin: 15px;
+            margin: 40px 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -256,12 +259,13 @@
                 position: relative;
                 width: 100%;
                 max-width: 600px;
-                aspect-ratio: 3 / 4;   
+                aspect-ratio: auto;   
                 border-radius: 16px;
                 overflow: hidden;
                 box-shadow: 0 4px 15px rgba(0,0,0,0.1);
                 background: white;
-                padding-bottom: 40px;
+                padding-bottom: 50px;
+                mnargin-top: 10px;
             }
             
             .image-board img {
@@ -390,7 +394,7 @@
         <div id="ui">
             <div class="score-board">
                 <span id="playerInfo"></span> |
-                점수: <span id="scoreVal">0</span> |
+                점수: <span id="scoreVal">0</span>점 |
                 진행: <span id="progressVal">1</span>/<span id="totalVal">0</span> |
                 시간: <span id="timeVal">0</span>초
             </div>
@@ -450,9 +454,9 @@
             q: "틀린 부분을 모두 찾으세요. (3개)",
             img: "OP.png",
             targets: [
-                { id: "waist", x: 0.24, y: 0.62, radius: 0.08 }, // y를 0.71에서 0.68로 (허리춤)
+                { id: "waist", x: 0.24, y: 0.60, radius: 0.08 }, // y를 0.71에서 0.68로 (허리춤)
                 { id: "hair",  x: 0.66, y: 0.40, radius: 0.05 }, // y를 0.36에서 0.40으로 (귀 높이)
-                { id: "nose",  x: 0.75, y: 0.42, radius: 0.05 }  // x를 0.71에서 0.74로 (코 중심)
+                { id: "nose",  x: 0.75, y: 0.43, radius: 0.05 }  // x를 0.71에서 0.74로 (코 중심)
             ],
                 explanation: "모자 밖 머리카락 노출, 마스크 밖 코 노출, 가운 허리끈 풀림은 모두 감염관리 측면에서 부적절합니다."
         },
@@ -841,38 +845,40 @@
         const circle = document.createElement("div");
         const current = quizData[currentQIndex];
     
-        // 1. 문제 유형에 따른 클래스 설정
         circle.className = (current.type === "IMAGE_MULTI") ? "hit-circle small" : "hit-circle large";
     
-        // 2. 이미지 비율 및 실제 표시 영역 계산
         const rect = img.getBoundingClientRect();
+        const boardRect = board.getBoundingClientRect(); // 보드 전체 기준 좌표
+    
+        // 이미지 실제 비율 계산 (레터박스 제외 순수 이미지 영역 찾기)
         const naturalRatio = img.naturalWidth / img.naturalHeight;
-        const boxRatio = rect.width / rect.height;
+        const displayedRatio = rect.width / rect.height;
     
         let effectiveWidth, effectiveHeight, offsetX, offsetY;
     
-        if (naturalRatio > boxRatio) {
-            // 이미지의 위아래에 여백이 생기는 경우
+        if (naturalRatio > displayedRatio) {
             effectiveWidth = rect.width;
             effectiveHeight = rect.width / naturalRatio;
             offsetX = 0;
             offsetY = (rect.height - effectiveHeight) / 2;
         } else {
-            // 이미지의 좌우에 여백이 생기는 경우
             effectiveHeight = rect.height;
             effectiveWidth = rect.height * naturalRatio;
             offsetX = (rect.width - effectiveWidth) / 2;
             offsetY = 0;
         }
     
-        // 3. 백분율(%)로 위치 변환 (반응형의 핵심)
-        // (여백 + (이미지 내 상대좌표 * 실제 이미지 너비)) / 전체 박스 너비
-        const leftPercent = ((offsetX + (target.x * effectiveWidth)) / rect.width) * 100;
-        const topPercent = ((offsetY + (target.y * effectiveHeight)) / rect.height) * 100;
+        // 🔥 보드(흰색 배경 포함) 내에서의 정확한 위치 계산
+        // 이미지의 화면상 시작점(rect.left/top)에서 보드의 시작점(boardRect.left/top)을 뺍니다.
+        const imgLeftInBoard = rect.left - boardRect.left;
+        const imgTopInBoard = rect.top - boardRect.top;
     
-        // 4. 스타일 적용
-        circle.style.left = leftPercent + "%";
-        circle.style.top = topPercent + "%";
+        const leftPx = imgLeftInBoard + offsetX + (target.x * effectiveWidth);
+        const topPx = imgTopInBoard + offsetY + (target.y * effectiveHeight);
+    
+        // %가 아닌 px로 고정 위치 지정 (보드 내부 기준)
+        circle.style.left = leftPx + "px";
+        circle.style.top = topPx + "px";
     
         board.appendChild(circle);
     }
