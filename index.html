@@ -7,11 +7,11 @@
     <title>AMC 수술실 감염관리 챌린지 🏥</title>
     <style>
         body {
-            margin: 0;
+            max-width: 420px;
+            margin: 0 auto; 
             padding: 0;
             font-family: 'Pretendard', sans-serif;
-            width: 100vw;
-            height: 100dvh;
+            height: 100vh;
             overflow: auto;
             background-image: url('main_bg4.png');
             background-color: #f0f8ff;
@@ -440,10 +440,10 @@
             type: "IMAGE_MULTI",
             q: "틀린 부분을 모두 찾으세요. (3개)",
             img: "OP.png",
-           targets: [
-                { id: "waist", x: 0.24, y: 0.78, radius: 0.055 }, // 더 아래 + 왼쪽
-                { id: "hair",  x: 0.68, y: 0.48, radius: 0.050 }, // 귀 중심
-                { id: "nose",  x: 0.84, y: 0.50, radius: 0.050 }  // 코 중심
+            targets: [
+                { id: "waist", x: 0.26, y: 0.73, radius: 0.055 }, // 여자 간호사 허리끈 시작점
+                { id: "hair",  x: 0.60, y: 0.41, radius: 0.050 }, // 가운데 남자 귀(노출된 머리카락 부근)
+                { id: "nose",  x: 0.76, y: 0.45, radius: 0.050 }  // 오른쪽 남자 마스크 위로 나온 코
             ],
                 explanation: "모자 밖 머리카락 노출, 마스크 밖 코 노출, 가운 허리끈 풀림은 모두 감염관리 측면에서 부적절합니다."
         },
@@ -691,11 +691,37 @@
         const current = quizData[currentQIndex];
         const img = e.target;
         const rect = img.getBoundingClientRect();
-
-        // 클릭 위치 → 실제 이미지 좌표로 변환
-        const x = (e.clientX - rect.left) / rect.width;
-        const y = (e.clientY - rect.top) / rect.height;
-
+        
+        const naturalWidth = img.naturalWidth;
+        const naturalHeight = img.naturalHeight;
+        
+        const displayedWidth = rect.width;
+        const displayedHeight = rect.height;
+        
+        // 이미지 실제 비율
+        const imageRatio = naturalWidth / naturalHeight;
+        const boxRatio = displayedWidth / displayedHeight;
+        
+        let offsetX = 0;
+        let offsetY = 0;
+        let effectiveWidth = displayedWidth;
+        let effectiveHeight = displayedHeight;
+        
+        // 🔥 레터박스 보정
+        if (imageRatio > boxRatio) {
+            // 좌우 꽉, 위아래 여백
+            effectiveHeight = displayedWidth / imageRatio;
+            offsetY = (displayedHeight - effectiveHeight) / 2;
+        } else {
+            // 위아래 꽉, 좌우 여백
+            effectiveWidth = displayedHeight * imageRatio;
+            offsetX = (displayedWidth - effectiveWidth) / 2;
+        }
+        
+        // 🔥 최종 좌표
+        const x = (e.clientX - rect.left - offsetX) / effectiveWidth;
+        const y = (e.clientY - rect.top - offsetY) / effectiveHeight;
+        
         let hit = null;
 
         for (const t of current.targets) {
