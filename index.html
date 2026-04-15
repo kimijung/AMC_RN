@@ -698,7 +698,7 @@
                     <div class="question-text">
                         ${current.q}
                     </div>
-                    <div class="image-guide">시간 제한 ${timeLimit}초</div>
+                    <div class="image-guide"><strong>시간 제한 ${timeLimit}초</strong></div>
                     <div id="imageBoard" class="image-board">
                         <img id="quizImage" src="${current.img}">
                     </div>
@@ -894,7 +894,7 @@
         } else {
             comment = "감염관리 수칙을 다시 한번 복습해볼까요? ✍️";
         }
-        document.getElementById('finalComment').innerText = comment;
+        document.getElementById('finalComment').innerHTML = comment;
 
         // 4. 결과 저장
         const totalTime = Math.floor((Date.now() - startTime) / 1000);
