@@ -126,22 +126,23 @@
         }
 
         #feedback {
-            position: absolute;    /* 화면 위에 띄움 (캐릭터 위치 영향 X) */
+            position: fixed;    /* 화면 위에 띄움 (캐릭터 위치 영향 X) */
             top: 50%;             /* 화면 세로 중앙 */
             left: 50%;            /* 화면 가로 중앙 */
             transform: translate(-50%, -50%); /* 정확히 정중앙 배치 */
-            z-index: 2000;        /* 모든 요소보다 위에 표시 */
+            z-index: 9999;        /* 모든 요소보다 위에 표시 */
             
-            padding: 16px 28px;
+            padding: 20px 40px;
             border-radius: 50px;  /* 캡슐 모양 */
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 800;
             text-align: center;
-            color: #fff;
+            color: #ffffff !important; /* 무조건 흰색 글자 */
             
             display: none;        /* 평소엔 숨김 */
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             pointer-events: none; /* 클릭 방해 금지 */
+            min-width: 200px;
         }
 
         .controls {
@@ -461,12 +462,12 @@
         }
 
         .image-guide {
-            font-size: 12px;
-            font-weight: 500;
+            font-size: 13px;
+            font-weight: 700;
             color: #1e8449;
             background: none;
             padding: 0;
-            margin-top: 2px;        
+            margin-top: 5px;        
             display: block;         
             text-align: center;
           }
