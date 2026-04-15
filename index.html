@@ -278,6 +278,7 @@
             margin: 0 auto;
             gap: 8px;
             padding-top: 10px;
+            padding: 0 12px 20px 12px;  /* 좌우 + 아래 여백 */
         }
 
         .hit-circle {
@@ -352,11 +353,11 @@
 
                 .image-board {
                     aspect-ratio: auto;
-                    padding: 14px;
                 }
             
                 .image-board img {
                     height: auto;
+                    width: 100%;
                     display: block;
                 }
             }
@@ -772,6 +773,7 @@
                         ${current.q}
                     </div>
                     <div class="image-guide"><strong>시간 제한 ${timeLimit}초</strong></div>
+                    
                     <div id="imageBoard" class="image-board">
                         <img id="quizImage" src="${current.img}">
                     </div>
