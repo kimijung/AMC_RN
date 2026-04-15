@@ -230,6 +230,11 @@
             margin-bottom: 5px;
         }
 
+        .btn-mcq {
+            padding: 10px 12px;
+            font-size: 15px;
+        }
+
         @media (max-width: 480px) {
             .question-card {
                 font-size: 17px;
@@ -287,7 +292,7 @@
                 position: relative;
                 width: 100%;
                 max-width: 600px;
-                aspect-ratio: auto;   
+                aspect-ratio: 3 / 4;   
                 border-radius: 16px;
                 overflow: hidden;
                 box-shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -427,6 +432,10 @@
             <div style="font-size: 14px; color: #666; line-height: 1.6; margin: 35px 0 35px 0; word-break: keep-all; text-align: center;">
                 수술장에 부착된 포스터와 식당에서 재생되는 동영상에<br>
                 퀴즈의 힌트가 있으니 참고해주세요 🍀
+            </div>
+
+            <div style="font-size: 12px; color: #aaa; margin-top: 6px;">
+                📱 이 퀴즈는 모바일 환경에 최적화되어 있습니다.
             </div>
     
             <button class="main-btn" onclick="startGame()">Start Game</button>
@@ -830,11 +839,7 @@
         // 4번 문제 (3개 다 찾아야 끝)
         if (foundTargets.size === current.targets.length) {
             handleResult(true);
-        } else {
-            const feedback = document.getElementById('feedback');
-            feedback.innerText = `잘 찾았어요 👍 ${current.targets.length - foundTargets.size}개 남음`;
-            feedback.style.background = "#27ae60";
-            feedback.style.color = "#fff";
+        } else { //아무 일도 일어나지 않음
         }
         }
 
