@@ -596,15 +596,22 @@
         controls.innerHTML = "";
         selectedMulti.clear();  
 
-        if (current.type === "OX") {
-            controls.classList.add("ox-layout");
-            charWrap.style.display = "flex";
-            card.innerHTML = `<div>${current.q}</div>`;
-            controls.innerHTML = `
-                <button class="btn-answer btn-o" onclick="chooseAnswer('O')">O</button>
-                <button class="btn-answer btn-x" onclick="chooseAnswer('X')">X</button>
-            `;
-        }
+        charWrap.style.display = "flex"; // 캐릭터를 일단 보이게 설정
+
+            if (current.type === "OX") {
+                charWrap.style.marginBottom = "80px"; // OX는 지금처럼 넓게!
+            } else {
+                charWrap.style.marginBottom = "15px"; // 객관식/다중선택은 좁게! (원하는 수치로 조절 가능)
+            }
+        
+            if (current.type === "OX") {
+                controls.classList.add("ox-layout");
+                card.innerHTML = `<div>${current.q}</div>`;
+                controls.innerHTML = `
+                    <button class="btn-answer btn-o" onclick="chooseAnswer('O')">O</button>
+                    <button class="btn-answer btn-x" onclick="chooseAnswer('X')">X</button>
+                `;
+            }
 
         else if (current.type === "MCQ") {
             charWrap.style.display = "flex";
