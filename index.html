@@ -250,6 +250,18 @@
             animation: popIn 0.18s ease-out;
         }
 
+        /* 🔽 틀린그림 3개 (작게) */
+        .hit-circle.small {
+            width: 34px;
+            height: 34px;
+        }
+        
+        /* 🔽 틀린그림 1개 (크게) */
+        .hit-circle.large {
+            width: 52px;
+            height: 52px;
+        }
+                
         @keyframes popIn {
             from {
                 transform: translate(-50%, -50%) scale(0.4);
@@ -396,11 +408,11 @@
             q: "틀린 부분을 모두 찾으세요. (3개)",
             img: "OP.png",
            targets: [
-                { id: "waist", x: 0.285, y: 0.695, radius: 0.025 },
-                { id: "hair",  x: 0.635, y: 0.405, radius: 0.018 },
-                { id: "nose",  x: 0.805, y: 0.415, radius: 0.016 }
+                { id: "waist", x: 0.26, y: 0.69, radius: 0.020 },
+                { id: "hair",  x: 0.63, y: 0.45, radius: 0.015 },
+                { id: "nose",  x: 0.81, y: 0.47, radius: 0.015 }
             ],
-            explanation: "모자 밖 머리카락 노출, 마스크 밖 코 노출, 가운 허리끈 풀림은 모두 감염관리 측면에서 부적절합니다."
+                explanation: "모자 밖 머리카락 노출, 마스크 밖 코 노출, 가운 허리끈 풀림은 모두 감염관리 측면에서 부적절합니다."
         },
         {
             type: "MCQ",
@@ -756,13 +768,21 @@
 
     function drawCircle(target, img) {
         const board = document.getElementById('imageBoard');
-
+    
         const circle = document.createElement("div");
-        circle.className = "hit-circle";
-
+    
+        const current = quizData[currentQIndex];
+    
+        // 🔥 문제별 크기 다르게
+        if (current.type === "IMAGE_MULTI") {
+            circle.className = "hit-circle small";
+        } else {
+            circle.className = "hit-circle large";
+        }
+    
         circle.style.left = (target.x * 100) + "%";
         circle.style.top = (target.y * 100) + "%";
-
+    
         board.appendChild(circle);
     }
 
