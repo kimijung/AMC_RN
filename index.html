@@ -11,18 +11,19 @@
             padding: 0;
             font-family: 'Pretendard', sans-serif;
             width: 100vw;
-            min-height: 100vh;
-            overflow: hidden;
+            height: 100dvh;
+            overflow: auto;
             background-image: url('main_bg4.png');
             background-color: #f0f8ff;
             background-size: cover;
             background-position: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         #entryScreen, #resultScreen {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             background: rgba(255, 255, 255, 0.95);
             padding: 32px;
             border-radius: 20px;
@@ -30,26 +31,27 @@
             width: 320px;
             text-align: center;
         }
-
+        
         #gameScreen {
             display: none;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100dvh;
             position: relative;
         }
 
         #ui {
-            position: absolute;
-            inset: 0;
+            position: relative;
+            width: 100%;
+            height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: calc(10px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom));
             box-sizing: border-box;
             justify-content: flex-start;
-            overflow: hidden;
+            overflow: visible;
         }
-
+        
         .score-board {
             font-size: 15px;
             font-weight: bold;
@@ -248,7 +250,7 @@
                 width: 100%;
                 max-width: 600px;
             
-                aspect-ratio: 4 / 5;   /* 🔥 핵심 (이미지 비율 유지) */
+                aspect-ratio: 3 / 4;   
             
                 margin: 0 auto;
                 border-radius: 16px;
@@ -262,31 +264,37 @@
                 height: 100%;
                 object-fit: contain;  /* 🔥 확대 방지 */
             }
-                    
-        .hit-circle {
-            position: absolute;
-            width: 46px;
-            height: 46px;
-            border: 4px solid #e74c3c;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            box-shadow: 0 0 0 3px rgba(255,255,255,0.7);
-            animation: popIn 0.18s ease-out;
-        }
-
-        /* 🔽 틀린그림 3개 (작게) */
-        .hit-circle.small {
-            width: 34px;
-            height: 34px;
-        }
+                                
+            .hit-circle {
+                position: absolute;
+                width: 6vw;
+                height: 6vw;
+                max-width: 46px;
+                max-height: 46px;
+                border: 4px solid #e74c3c;
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                pointer-events: none;
+                box-shadow: 0 0 0 3px rgba(255,255,255,0.7);
+                animation: popIn 0.18s ease-out;
+            }
+            
+            /* 🔽 틀린그림 3개 (작게) */
+            .hit-circle.small {
+                width: 4vw;
+                height: 4vw;
+                max-width: 34px;
+                max-height: 34px;
+            }
+            
+            /* 🔽 틀린그림 1개 (크게) */
+            .hit-circle.large {
+                width: 8vw;
+                height: 8vw;
+                max-width: 52px;
+                max-height: 52px;
+            }
         
-        /* 🔽 틀린그림 1개 (크게) */
-        .hit-circle.large {
-            width: 52px;
-            height: 52px;
-        }
-                
         @keyframes popIn {
             from {
                 transform: translate(-50%, -50%) scale(0.4);
