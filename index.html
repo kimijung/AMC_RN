@@ -994,7 +994,11 @@
         document.getElementById('resultTitle').innerText = `${currentName}님 수고하셨습니다 🙇‍♀️🙇‍♂️`;
         
         // 2. 점수 삽입
-        document.getElementById('finalScore').innerText = `최종 점수: ${score}점`;
+        document.getElementById('finalScore').innerHTML = `
+            최종 점수: 
+            <span style="color:#0b6b3a; font-weight:800;">${score}점</span>
+            <span style="color:#444; font-weight:500;"> / 80점</span>
+        `;
 
         // 3. 점수별 코멘트 (추천 멘트로 변경)
         let comment = "";
