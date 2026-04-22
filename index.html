@@ -1012,7 +1012,7 @@
         document.getElementById('finalComment').innerHTML = comment;
 
         // 4. 결과 저장
-        const totalTime = Math.floor((Date.now() - startTime) / 1000);
+        const totalTime = Number(((Date.now() - startTime) / 1000).toFixed(2));
         saveResultToSheet(currentAffiliation, currentName, score, totalTime, answerLog);
     }
 
