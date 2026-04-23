@@ -812,8 +812,9 @@
                     <div class="image-guide"><strong>시간 제한 ${timeLimit}초</strong></div>
                     
                     <div id="imageBoard" class="image-board">
-                        <img id="quizImage" src="${current.img}"
-                             onerror="this.src='${current.img.replace('.webp','.png')}'">
+                       <img id="quizImage" src="${current.img}"
+                            loading="lazy"
+                            onerror="this.src='${current.img.replace('.webp','.png')}'">
                     </div>
                 </div>
             `;
